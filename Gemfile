@@ -10,12 +10,25 @@ group :development, :test do
 
 end
 
-gem 'yaml_db'
+group :test do
+  gem 'factory_girl_rails'
+  gem 'capybara'
+  gem 'launchy'
+end
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
 
 group :production do
    gem 'pg'
    gem 'rails_12factor'
 end
+
+group :development do
+  gem 'guard'
+end
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
