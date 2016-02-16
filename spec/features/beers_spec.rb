@@ -13,6 +13,12 @@ describe "Beer" do
   end
 
   describe "beers created" do
+	let!(:user) { FactoryGirl.create :user }
+
+	before :each do
+	  sign_in(username:"Pekka", password:"Foobar1")
+	end
+
     it "have a name" do
       visit new_beer_path
       fill_in('beer_name', with:'VMP')

@@ -1,0 +1,16 @@
+language: ruby
+
+rvm:
+ - 2.3.0
+
+script:
+ - bundle exec rake db:migrate --trace
+ - RAILS_ENV=test bundle exec rake db:migrate --trace
+ - bundle exec rake db:test:prepare
+ - bundle exec rspec -fd spec/
+
+deploy:
+  provider: heroku
+  app: arcane-eyrie-74107
+  api_key:
+    secure: GG/v9iljdt/KpbP/DnuocD30ne8rUEiqpZFPkbmVgo2jQ6QBxI6qEPRULd34+TYAtqnBqQRxjQgTBPNAPQnjftFPwJXbSTJYcRGFCn5tu3B0VbDiQxLSAAp/91xjBCOKMSmP6kVuQHhTwilR0sXduLD1u7hlPunRtjRDGsrrYe/b6IPwi+bQYIbTCdzarwmUrtEilM9wB7Dc/GPmJ5nuUhFb95gBJBZcA1h/eyqWGW5a4HixQJEnG4Y6FuvofJYZm68UBAaSg2pRnK/d2TtEYbKLCmcPODMliOKo1CBTA1+Y3a4d0vs6W0TVAqsC+AcqgOPS5cx+9KUVGS9ecrshnEn9Rgu1kk+utXH9jsDCqtjbEoxfky0+25ZSA0TmpSWE6f5R9DNfKP1odNYkf8u9uJfVeepHUXTZvMqzGAL/8jG0p4WgIX+KtDAAmJNU0RREun4tMLKQLvu6Oi8k/dYoKd7fqpSM7u/meZcHhq4SYL+IitlTLW7tKQ60odJCNZMoAAuoAq3HSIBo9yK3go6eQ03nRzVPpM+kvEPv1aACLB7nrwHCMUnXRHHZiwmmlc+i+iVmYZH+hBBP79i4ZClUstmRMh8UzYItSAd12dXa8RI/FHOy+Dfh3Vh4mTUydVqh4C8II2YF6FWxoqHl77nyz710/oNQVQ48Q/f/GXf0e8I=

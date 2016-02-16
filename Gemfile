@@ -14,10 +14,12 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'launchy'
+  gem 'simplecov', require: false
 end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-its'
 end
 
 group :production do
@@ -66,6 +68,6 @@ group :development do
   gem 'web-console', '~> 2.0'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  gem 'spring', '1.6.2'
 end
 
