@@ -7,10 +7,18 @@ Rails.application.routes.draw do
   get 'signup', to: 'users#new'
   get 'signin', to: 'sessions#new'
   delete 'signout', to: 'sessions#destroy'
+  get 'places', to: 'places#index'
+  post 'places', to:'places#search'
 
   resources :beers
   resources :breweries
   resources :ratings, only: [:index, :new, :create, :destroy]
+  resources :places, only:[:index, :show]
+  # mikä generoi samat polut kuin seuraavat kaksi
+  # get 'places', to:'places#index'
+  # get 'places/:id', to:'places#show'
+
+  post 'places', to:'places#search'
 
   root 'breweries#index'
 

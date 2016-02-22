@@ -10,6 +10,8 @@ class MembershipsController < ApplicationController
   # GET /memberships/1
   # GET /memberships/1.json
   def show
+    @membership = @beer_club.memberships(current_user.id == user_id)
+    byebug
   end
 
   # GET /memberships/new
@@ -30,7 +32,7 @@ class MembershipsController < ApplicationController
     if not current_user.in? club.members and @membership.save
       current_user.memberships << @membership
       @membership.save
-      redirect_to @membership.user, notice: "You've joined to #{@membership.beer_club}"
+      redirect_to club, notice: "#{current_user.username}, welcome to the club!"
     else
       @clubs = BeerClub.all
       render :new

@@ -15,6 +15,7 @@ group :test do
   gem 'capybara'
   gem 'launchy'
   gem 'simplecov', require: false
+  gem 'webmock'
 end
 
 group :development, :test do
@@ -31,6 +32,7 @@ group :development do
   gem 'guard'
 end
 
+gem 'httparty'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
