@@ -14,6 +14,7 @@ class PlacesController < ApplicationController
       redirect_to places_path, :notice => "No locations in #{params[:city]}"
     else
       render :index
+      byebug
     end
   end
 

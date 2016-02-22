@@ -10,8 +10,6 @@ class MembershipsController < ApplicationController
   # GET /memberships/1
   # GET /memberships/1.json
   def show
-    @membership = @beer_club.memberships(current_user.id == user_id)
-    byebug
   end
 
   # GET /memberships/new
