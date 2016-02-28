@@ -28,8 +28,10 @@ group :production do
    gem 'rails_12factor'
 end
 
+gem 'bootstrap-sass'
 group :development do
   gem 'guard'
+  gem 'rails_layout'
 end
 
 gem 'httparty'

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 include Helpers
 
-describe "Rating" do
+describe "Ratings" do
   let!(:brewery) { FactoryGirl.create :brewery, name:"Koff" }
   let!(:beer1) { FactoryGirl.create :beer, name:"iso 3", brewery:brewery }
   let!(:beer2) { FactoryGirl.create :beer, name:"Karhu", brewery:brewery }
@@ -12,7 +12,7 @@ describe "Rating" do
     sign_in(username:"Pekka", password:"Foobar1")
   end
 
-  it "when given, is registered to the beer and user who is signed in" do
+  it "when created, is registered to the beer and user who is signed in" do
     visit new_rating_path
     select('iso 3', from:'rating[beer_id]')
     fill_in('rating[score]', with:'15')
@@ -25,49 +25,40 @@ describe "Rating" do
     expect(beer1.ratings.count).to eq(1)
     expect(beer1.average_rating).to eq(15.0)
   end
-  it "and user ratings are shown on user page" do
-    visit new_rating_path
-    select('iso 3', from:'rating[beer_id]')
-    fill_in('rating[score]', with:'15')
-    click_button "Create Rating"
 
-    visit user_path(user)
-    @ratings = Rating.all
-
-    user.ratings.each do |rating|
-      expect(page).to have_content rating.score
-    end
-  end
-  it "when user removes rating it is removed from db" do
-    visit user_path(user)
-    @ratings = Rating.all
-
-    user.ratings.each do |rating|
-      within(".rating") do
-        click_on("delete")
-      end
-    end
-  end
-  describe "ratings page" do
+  describe "when some are given" do
     before :each do
-      visit new_rating_path
-      select('iso 3', from:'rating[beer_id]')
-      fill_in('rating[score]', with:'15')
-      click_button "Create Rating"
+      FactoryGirl.create :rating, user: user, beer: beer1, score:10
+      FactoryGirl.create :rating, user: user, beer: beer2, score:20
+      FactoryGirl.create :rating, user: user, beer: beer2, score:30
     end
 
-    it "ratings page lists the ratings and their amount " do
+    it "those and their count are shown at the ratings page" do
       visit ratings_path
-
-      expect(page).to have_content "Number of ratings #{Rating.count}"
+      expect(page).to have_content "Number of ratings 3"
+      expect(page).to have_content "iso 3 10"
+      expect(page).to have_content "Karhu 20"
+      expect(page).to have_content "Karhu 20"
     end
-    it "and their amount" do
-      visit ratings_path
-      @ratings = Rating.all
 
-      @ratings.each do |rating|
-          expect(page).to have_content rating.score
-      end
+    it "are shown on raters page" do
+      arto = FactoryGirl.create :user, username: "arto"
+      FactoryGirl.create :rating, user: arto, beer: beer1, score:40
+
+      visit user_path(user)
+      expect(page).to have_content "iso 3 10"
+      expect(page).to have_content "Karhu 20"
+      expect(page).to have_content "Karhu 20"
+      expect(page).not_to have_content "iso 3 40"
+    end
+
+    it "and the rater deletes one, it is removed from database" do
+      visit user_path(user)
+      expect{
+        page.all('a', text:'delete')[1].click
+      }.to change{Rating.count}.by(-1)
     end
   end
+
+
 end

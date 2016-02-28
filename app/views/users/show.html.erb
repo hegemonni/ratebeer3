@@ -1,12 +1,21 @@
 <p id="notice"><%= notice %></p>
 
 <h2>
-  <%= @user.username %>
+  <%= @user.username %>  
+  <% if @user.suspended %>
+      <span class="label label-info">suspended</span>
+  <% end %>
 </h2>
 
 <p>
   Has made <%= pluralize(@user.ratings.count, 'rating') %>
 </p>
+
+<% if @user.ratings.any? %>
+  <p>Favorite style <%= @user.favorite_style.name %></p>
+
+  <p>Favorite brewery <%= @user.favorite_brewery.name %></p>
+<% end %>
 
 <% if @user.beer_clubs.any? %>
   <p>
@@ -30,7 +39,13 @@
   <% end %>
 </ul>
 
+<% if current_user.admin && @user.suspended == false %>
+<%= link_to 'Suspend account', toggle_activity_user_path(@user.id), method: :post, class: "btn btn-primary" %>
+<% elsif current_user.admin && @user.suspended == true %>
+<%= link_to 'Unsuspend account', toggle_activity_user_path(@user.id), method: :post, class: "btn btn-primary" %>
+<% end %>
+
 <% if @user == current_user %>
-  <%= link_to 'Delete account', @user, method: :delete, data: { confirm: 'Are you sure?' } %>
-  <%= link_to 'Edit', edit_user_path(@user) %>
+  <%= link_to 'Delete account', @user, method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-danger' %>
+  <%= link_to 'Edit', edit_user_path(@user), class:'btn btn-primary' %>
 <% end %>

@@ -1,7 +1,7 @@
+<h2> <%= @place.name %> </h2>
 
-<h2><%= @places["name"] %></h2>
-<p><%= @places["street"]%><br>
-<%= @places["zip"]%><%= @places["city"]%></p>
+<p> <%= @place.street %> </p>
 
-<iframe>src=<% @places["blogmap"] %></iframe>
+<p> <%= "#{@place.zip} #{@place.city}" %> </p>
 
+<iframe src="<%=@place.map_url%>"</iframe>

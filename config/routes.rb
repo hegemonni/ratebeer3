@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   resources :beer_clubs
   resources :memberships
-  resources :users
+  resources :users do
+    post 'toggle_activity', on: :member
+  end
   resource :session, only: [:new, :create, :destroy]
   resources :styles
 
@@ -12,7 +14,9 @@ Rails.application.routes.draw do
   post 'places', to:'places#search'
 
   resources :beers
-  resources :breweries
+  resources :breweries do
+    post 'toggle_activity', on: :member
+  end
   resources :ratings, only: [:index, :new, :create, :destroy]
   resources :places, only:[:index, :show]
   # mikä generoi samat polut kuin seuraavat kaksi

@@ -4,39 +4,33 @@ include Helpers
 
 describe "Beer" do
   before :each do
-    @breweries = ["Koff", "Karjala", "Schlenkerla"]
-    year = 1896
-    @breweries.each do |brewery_name|
-        FactoryGirl.create(:brewery, name: brewery_name, year: year += 1)
-    end
-    @styles = ["Weizen", "Lager", "Pale ale", "IPA", "Porter"]
+    FactoryGirl.create :brewery, name:"testbrew"
+    FactoryGirl.create :style
   end
 
-  describe "beers created" do
-	let!(:user) { FactoryGirl.create :user }
-
-	before :each do
-	  sign_in(username:"Pekka", password:"Foobar1")
-	end
-
-    it "have a name" do
-      visit new_beer_path
-      fill_in('beer_name', with:'VMP')
-      click_on('Create Beer')
-
-      expect(current_path).to eq(beers_path)
-      expect(page).to have_content 'Beer was successfully created.'
-      expect(page).to have_content 'Listing Beers'
+  describe "if a user logged in" do
+    before :each do
+      FactoryGirl.create :user
+      sign_in(username:"Pekka", password:"Foobar1")
     end
 
-    it "are not saved if name nil" do
+    it "a new beer is created if a valid name specified" do
       visit new_beer_path
-      fill_in('beer_name', with:'')
-      click_on('Create Beer')
-
-      expect(current_path).to eq(beers_path)
-      expect(page).to have_content 'Name can\'t be blank'
+      fill_in('beer_name', with:'CrapIPA')
+      select('Lager', from:'beer[style_id]')
+      expect{
+        click_button "Create Beer"
+      }.to change{Beer.count}.from(0).to(1)
     end
+
+    it "is not created if name not valid" do
+      visit new_beer_path
+      click_button "Create Beer"
+      expect(Beer.count).to be(0)
+      expect(page).to have_content 'prohibited this beer from being saved'
+      expect(page).to have_content "Name can't be blank"
+    end
+
   end
+
 end
-

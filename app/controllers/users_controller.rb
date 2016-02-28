@@ -56,12 +56,21 @@ class UsersController < ApplicationController
   def destroy
     if current_user == @user
       @user.destroy
-      session[:user_id] = nil
+      #session[:user_id] = nil
     end
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def toggle_activity
+    user = User.find(params[:id])
+    user.update_attribute :suspended, (not user.suspended)
+
+    new_status = user.suspended? ? "suspended" : "unsuspended"
+
+    redirect_to :back, notice:"user has been #{new_status}"
   end
 
   private
