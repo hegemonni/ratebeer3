@@ -16,6 +16,8 @@ group :test do
   gem 'launchy'
   gem 'simplecov', require: false
   gem 'webmock'
+  gem 'selenium-webdriver'
+  gem 'database_cleaner'
 end
 
 group :development, :test do
@@ -34,6 +36,9 @@ group :development do
   gem 'rails_layout'
 end
 
+gem 'omniauth-github', '~> 1.1.2'
+gem 'rack-mini-profiler'
+gem 'jquery-turbolinks'
 gem 'httparty'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'

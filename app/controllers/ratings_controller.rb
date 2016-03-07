@@ -1,9 +1,11 @@
 class RatingsController < ApplicationController
+
   def index
     @ratings = Rating.all
-    @users = User.all
-    @breweries = Brewery.all
-    @beers = Beer.all
+
+    @users = User.includes(:ratings).all
+    @breweries = Brewery.includes(:ratings).all
+    @beers = Beer.includes(:ratings).all
     @styles = Style.all
   end
 

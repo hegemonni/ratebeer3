@@ -5,7 +5,7 @@ class Rating < ActiveRecord::Base
 
   scope :recent, -> (num) { order('created_at DESC').limit(num) }
 
-  belongs_to :beer
+  belongs_to :beer, touch: true
   belongs_to :user
 
   def to_s

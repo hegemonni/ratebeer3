@@ -1,3 +1,7 @@
 <h2>List of ratings</h2>
 
+<% cache "@ratings", expires_in:10.minutes do %>
+
 <%= render 'list' %>
+
+<% end %>
